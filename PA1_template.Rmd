@@ -1,25 +1,181 @@
 ---
 title: "Reproducible Research: Peer Assessment 1"
+author: "Stephan Gade"
 output: 
   html_document:
     keep_md: true
 ---
 
 
+```{r setup, message=FALSE, results='hide'}
+
+# load libraries
+library(knitr)
+library(ggplot2)
+library(dplyr)
+
+# setup global knitr options
+knitr::opts_chunk$set(error = TRUE, message = FALSE, results = 'hide', warning = FALSE, echo = TRUE)
+
+# Set local for english weekdays 
+Sys.setlocale("LC_TIME","C")
+
+```
+
+
 ## Loading and preprocessing the data
+
+```{r read_data}
+
+data_activity <- read.csv(unz(description = "activity.zip", filename = "activity.csv"))
+
+```
 
 
 
 ## What is mean total number of steps taken per day?
 
+```{r steps}
+
+data_steps <- data_activity %>% 
+  group_by(date) %>% 
+  summarize(total_steps = sum(steps, na.rm = T),
+            mean_steps = mean(steps, na.rm = T),
+            median_steps = median(steps, na.rm = T)) %>% 
+  ungroup()
+
+```
+
+
+```{r steps_histogram}
+
+data_steps %>% 
+  ggplot(aes(x = total_steps)) +
+  geom_histogram(binwidth = 2000) +
+  theme_bw(15) +
+  xlab("Total number of steps per day")
+
+```
+
+```{r steps_summary}
+
+data_steps %>% 
+  select(Day = date, `Number of steps (mean)` = mean_steps, `Number of steps (median)` = median_steps) %>% 
+  kable()
+
+```
 
 
 ## What is the average daily activity pattern?
+
+```{r daily_pattern}
+
+data_daily_pattern <- data_activity %>% 
+  group_by(interval) %>% 
+  summarize(mean_steps = mean(steps, na.rm = T)) %>% 
+  ungroup
+
+```
+
+
+```{r steps_lineplot}
+
+data_activity %>% 
+  ggplot(aes(x = interval, y = steps, group = date)) +
+  geom_line(alpha = 0.1) +
+  geom_line(data = data_daily_pattern, aes(x = interval, y = mean_steps, group = NULL), color = 'red') +
+  theme_bw(15) +
+  xlab("Interval") + ylab("Number of steps (per interval)")
+
+```
+
+As we can see from the graph the interval with the most steps (averaged over all days) is: 
+
+```{r max_steps_interval, results='asis'}
+data_daily_pattern$interval[which.max(data_daily_pattern$mean_steps)]
+```
 
 
 
 ## Imputing missing values
 
+The data contain a couple of intervals without a number of steps. The number of intervals with missings in the entire dataset is
 
+```{r number_NAs, results='asis'}
+sum(is.na(data_activity$steps))
+```
+
+Since we can see a clear pattern when we look at intervals averaged over all days (and because there are days without any valid number of steps) it seems like a good idea to use the mean over all days for a specific interval to impute these missing values.
+
+```{r impute_data}
+
+data_imputed <- data_activity %>% 
+  mutate(mean_steps = data_daily_pattern$mean_steps[match(interval, data_daily_pattern$interval)]) %>% 
+  mutate(steps = ifelse(is.na(steps), round(mean_steps), steps)) %>% 
+  select(-mean_steps)
+
+```
+
+```{r steps_imputed}
+
+data_steps_imputed <- data_imputed %>% 
+  group_by(date) %>% 
+  summarize(total_steps = sum(steps, na.rm = T),
+            mean_steps = mean(steps, na.rm = T),
+            median_steps = median(steps, na.rm = T)) %>% 
+  ungroup()
+
+```
+
+
+```{r steps_histogram_imputed}
+
+data_steps_imputed %>% 
+  ggplot(aes(x = total_steps)) +
+  geom_histogram(binwidth = 2000) +
+  theme_bw(15) +
+  xlab("Total number of steps per day (based on imputed data)")
+
+```
+
+```{r steps_summary_imputed}
+
+data_steps_imputed %>% 
+  select(Day = date, `Number of steps (mean)` = mean_steps, `Number of steps (median)` = median_steps) %>% 
+  kable()
+
+```
 
 ## Are there differences in activity patterns between weekdays and weekends?
+
+
+```{r weekdays}
+
+data_imputed <- data_imputed %>% 
+  mutate(day = weekdays(as.Date(date)),
+         weekday = factor(ifelse(day %in% c("Saturday", "Sunday"), "weekend", "weekday"), levels = c("weekday", "weekend")))
+
+```
+
+
+```{r weekday_pattern}
+
+data_weekday_pattern <- data_imputed %>% 
+  group_by(weekday, interval) %>% 
+  summarize(mean_steps = mean(steps)) %>% 
+  ungroup()
+
+```
+
+
+```{r steps_weekday_lineplot}
+
+data_imputed %>% 
+  ggplot(aes(x = interval, y = steps, group = date)) +
+  geom_line(alpha = 0.1) +
+  geom_line(data = data_weekday_pattern, aes(x = interval, y = mean_steps, group = NULL), color = 'red') +
+  theme_bw(15) +
+  facet_wrap(~weekday, ncol = 2) +
+  xlab("Interval") + ylab("Number of steps (per interval)")
+
+```
