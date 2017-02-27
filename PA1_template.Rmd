@@ -25,15 +25,21 @@ Sys.setlocale("LC_TIME","C")
 
 ## Loading and preprocessing the data
 
-```{r read_data}
+At first we have to read the data. We assume that the file **activity.zip** is in the same folder like the R-markdown file. We can directly read the csv file from the archive:
+
+```{r read_data, results='asis'}
 
 data_activity <- read.csv(unz(description = "activity.zip", filename = "activity.csv"))
+kable(head(data_activity))
 
 ```
 
+As we can see the data contains the number of steps per interval and day. 
 
 
 ## What is mean total number of steps taken per day?
+
+We can calculate the total number of steps, as well as the mean/median number of steps per day:
 
 ```{r steps}
 
@@ -46,6 +52,7 @@ data_steps <- data_activity %>%
 
 ```
 
+and create a histogram of the total number of steps across all days
 
 ```{r steps_histogram}
 
@@ -57,7 +64,9 @@ data_steps %>%
 
 ```
 
-```{r steps_summary}
+The mean/median number of steps for each day are:
+
+```{r steps_summary, results='asis'}
 
 data_steps %>% 
   select(Day = date, `Number of steps (mean)` = mean_steps, `Number of steps (median)` = median_steps) %>% 
@@ -68,6 +77,8 @@ data_steps %>%
 
 ## What is the average daily activity pattern?
 
+Another interesting question we can ask the data is if there is a daily pattern. We therefore group the data according to the intervals and average the number of steps over all days creating the number of steps for an average day:
+
 ```{r daily_pattern}
 
 data_daily_pattern <- data_activity %>% 
@@ -77,6 +88,7 @@ data_daily_pattern <- data_activity %>%
 
 ```
 
+ This average daily pattern can be displayed using a line-chart with the intervals on the x and the number of steps on the y-axis. The black lines are the separate days and the red-line our average daily pattern:
 
 ```{r steps_lineplot}
 
@@ -89,23 +101,23 @@ data_activity %>%
 
 ```
 
-As we can see from the graph the interval with the most steps (averaged over all days) is: 
+Please note that the interval numbers can be interpreted as a time: 500 is the 5min interval starting at 5am, 1500 the interval starting at 3pm. As we can see from the graph the interval with the most steps (averaged over all days) is: 
 
 ```{r max_steps_interval, results='asis'}
 data_daily_pattern$interval[which.max(data_daily_pattern$mean_steps)]
 ```
 
-
+This might be the walk to work or some morning exercise.
 
 ## Imputing missing values
 
-The data contain a couple of intervals without a number of steps. The number of intervals with missings in the entire dataset is
+The data contain a couple of intervals without a number of steps. The number of intervals with missing values in the entire data set is
 
 ```{r number_NAs, results='asis'}
 sum(is.na(data_activity$steps))
 ```
 
-Since we can see a clear pattern when we look at intervals averaged over all days (and because there are days without any valid number of steps) it seems like a good idea to use the mean over all days for a specific interval to impute these missing values.
+Since we can see a clear pattern when we look at intervals averaged over all days (and because there are days without any valid number of steps) it seems like a good idea to use the mean over all days for a specific interval to impute these missing values. Fortunately, we already calculated the average number of steps for each interval across the days for our daily pattern. We can use this to impute our data. We round the average number of steps to have integer values:
 
 ```{r impute_data}
 
@@ -115,6 +127,8 @@ data_imputed <- data_activity %>%
   select(-mean_steps)
 
 ```
+
+With the imputed data we can now do the same analysis as before. We can calculate the total number of steps and the mean/median number of steps per day
 
 ```{r steps_imputed}
 
@@ -127,6 +141,7 @@ data_steps_imputed <- data_imputed %>%
 
 ```
 
+and show the total number of steps in a histogram
 
 ```{r steps_histogram_imputed}
 
@@ -138,7 +153,9 @@ data_steps_imputed %>%
 
 ```
 
-```{r steps_summary_imputed}
+The difference to the original data containing missing values is obvious: the peak at low numbers is gone and overall we have more days with 10,000 or more steps (which makes sense when looking for the total number of steps per day). And we can look at the mean/median number of steps per day. 
+
+```{r steps_summary_imputed, results='asis'}
 
 data_steps_imputed %>% 
   select(Day = date, `Number of steps (mean)` = mean_steps, `Number of steps (median)` = median_steps) %>% 
@@ -146,8 +163,11 @@ data_steps_imputed %>%
 
 ```
 
+Here, we can spot another important difference to the original data. Overall the median number of steps per day is zero indicating that there are many (more than half) intervals per day where the person does not walk at all (e.g. while sleeping). In the original days we saw also NaN for the median and mean. These were days where we did not have a single valid measurement. For these days every interval had to be imputed leading to higher median number of steps per day.
+
 ## Are there differences in activity patterns between weekdays and weekends?
 
+Another interesting question is if we can spot differences between a weekday and the weekends. We use the R function `weekdays` to get the weekday for the dates we have. With this we can introduce a new variable weekday indicating if the date was a weekend or not:
 
 ```{r weekdays}
 
@@ -157,6 +177,7 @@ data_imputed <- data_imputed %>%
 
 ```
 
+Again we can calculate the average number of steps per interval. But this time we do it for weekends and weekdays separately
 
 ```{r weekday_pattern}
 
@@ -167,6 +188,7 @@ data_weekday_pattern <- data_imputed %>%
 
 ```
 
+and plot a line-chart:
 
 ```{r steps_weekday_lineplot}
 
@@ -179,3 +201,5 @@ data_imputed %>%
   xlab("Interval") + ylab("Number of steps (per interval)")
 
 ```
+
+And indeed, we can see a clear difference in the walking behavior. The morning spike is less distinct at the weekend.
