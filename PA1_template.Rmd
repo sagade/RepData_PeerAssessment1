@@ -13,10 +13,9 @@ output:
 library(knitr)
 library(ggplot2)
 library(dplyr)
-library(pander)
 
 # setup global knitr options
-knitr::opts_chunk$set(error = TRUE, message = FALSE, results = 'hide', warning = FALSE, echo = TRUE, fig.path = "figure/")
+knitr::opts_chunk$set(error = TRUE, message = FALSE, warning = FALSE, echo = TRUE, fig.path = "figure/")
 
 # Set local for english weekdays 
 Sys.setlocale("LC_TIME","C")
@@ -28,10 +27,10 @@ Sys.setlocale("LC_TIME","C")
 
 At first we have to read the data. We assume that the file **activity.zip** is in the same folder like the R-markdown file. We can directly read the csv file from the archive:
 
-```{r read_data, results='asis'}
+```{r read_data}
 
 data_activity <- read.csv(unz(description = "activity.zip", filename = "activity.csv"))
-pander(head(data_activity))
+kable(head(data_activity), format = "markdown")
 
 ```
 
@@ -67,11 +66,11 @@ data_steps %>%
 
 The mean/median number of steps for each day are:
 
-```{r steps_summary, results='markdown'}
+```{r steps_summary}
 
 data_steps %>% 
   select(Day = date, `Number of steps (mean)` = mean_steps, `Number of steps (median)` = median_steps) %>% 
-  pander()
+  kable(format = "markdown")
 
 ```
 
@@ -104,7 +103,7 @@ data_activity %>%
 
 Please note that the interval numbers can be interpreted as a time: 500 is the 5min interval starting at 5am, 1500 the interval starting at 3pm. As we can see from the graph the interval with the most steps (averaged over all days) is: 
 
-```{r max_steps_interval, results='asis'}
+```{r max_steps_interval}
 data_daily_pattern$interval[which.max(data_daily_pattern$mean_steps)]
 ```
 
@@ -114,7 +113,7 @@ This might be the walk to work or some morning exercise.
 
 The data contain a couple of intervals without a number of steps. The number of intervals with missing values in the entire data set is
 
-```{r number_NAs, results='asis'}
+```{r number_NAs}
 sum(is.na(data_activity$steps))
 ```
 
@@ -156,11 +155,11 @@ data_steps_imputed %>%
 
 The difference to the original data containing missing values is obvious: the peak at low numbers is gone and overall we have more days with 10,000 or more steps (which makes sense when looking for the total number of steps per day). And we can look at the mean/median number of steps per day. 
 
-```{r steps_summary_imputed, results='asis'}
+```{r steps_summary_imputed}
 
 data_steps_imputed %>% 
   select(Day = date, `Number of steps (mean)` = mean_steps, `Number of steps (median)` = median_steps) %>% 
-  pander()
+  kable(format = "markdown")
 
 ```
 
