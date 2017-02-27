@@ -13,6 +13,7 @@ output:
 library(knitr)
 library(ggplot2)
 library(dplyr)
+library(pander)
 
 # setup global knitr options
 knitr::opts_chunk$set(error = TRUE, message = FALSE, results = 'hide', warning = FALSE, echo = TRUE, fig.path = "figure/")
@@ -30,7 +31,7 @@ At first we have to read the data. We assume that the file **activity.zip** is i
 ```{r read_data, results='asis'}
 
 data_activity <- read.csv(unz(description = "activity.zip", filename = "activity.csv"))
-kable(head(data_activity))
+pander(head(data_activity))
 
 ```
 
@@ -66,11 +67,11 @@ data_steps %>%
 
 The mean/median number of steps for each day are:
 
-```{r steps_summary, results='asis'}
+```{r steps_summary, results='markdown'}
 
 data_steps %>% 
   select(Day = date, `Number of steps (mean)` = mean_steps, `Number of steps (median)` = median_steps) %>% 
-  kable()
+  pander()
 
 ```
 
@@ -159,7 +160,7 @@ The difference to the original data containing missing values is obvious: the pe
 
 data_steps_imputed %>% 
   select(Day = date, `Number of steps (mean)` = mean_steps, `Number of steps (median)` = median_steps) %>% 
-  kable()
+  pander()
 
 ```
 

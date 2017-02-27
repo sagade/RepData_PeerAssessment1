@@ -126,6 +126,7 @@ $(document).ready(function () {
 library(knitr)
 library(ggplot2)
 library(dplyr)
+library(pander)
 
 # setup global knitr options
 knitr::opts_chunk$set(error = TRUE, message = FALSE, results = 'hide', warning = FALSE, echo = TRUE, fig.path = &quot;figure/&quot;)
@@ -136,45 +137,50 @@ Sys.setlocale(&quot;LC_TIME&quot;,&quot;C&quot;)</code></pre>
 <h2>Loading and preprocessing the data</h2>
 <p>At first we have to read the data. We assume that the file <strong>activity.zip</strong> is in the same folder like the R-markdown file. We can directly read the csv file from the archive:</p>
 <pre class="r"><code>data_activity &lt;- read.csv(unz(description = &quot;activity.zip&quot;, filename = &quot;activity.csv&quot;))
-kable(head(data_activity))</code></pre>
-<table>
+pander(head(data_activity))</code></pre>
+<table style="width:42%;">
+<colgroup>
+<col width="11%"></col>
+<col width="15%"></col>
+<col width="15%"></col>
+</colgroup>
 <thead>
 <tr class="header">
-<th align="right">steps</th>
-<th align="left">date</th>
-<th align="right">interval</th>
+<th align="center">steps</th>
+<th align="center">date</th>
+<th align="center">interval</th>
 </tr>
 </thead>
 <tbody>
 <tr class="odd">
-<td align="right">NA</td>
-<td align="left">2012-10-01</td>
-<td align="right">0</td>
+<td align="center">NA</td>
+<td align="center">2012-10-01</td>
+<td align="center">0</td>
 </tr>
 <tr class="even">
-<td align="right">NA</td>
-<td align="left">2012-10-01</td>
-<td align="right">5</td>
+<td align="center">NA</td>
+<td align="center">2012-10-01</td>
+<td align="center">5</td>
 </tr>
 <tr class="odd">
-<td align="right">NA</td>
-<td align="left">2012-10-01</td>
-<td align="right">10</td>
+<td align="center">NA</td>
+<td align="center">2012-10-01</td>
+<td align="center">10</td>
 </tr>
 <tr class="even">
-<td align="right">NA</td>
-<td align="left">2012-10-01</td>
-<td align="right">15</td>
+<td align="center">NA</td>
+<td align="center">2012-10-01</td>
+<td align="center">15</td>
 </tr>
 <tr class="odd">
-<td align="right">NA</td>
-<td align="left">2012-10-01</td>
-<td align="right">20</td>
+<td align="center">NA</td>
+<td align="center">2012-10-01</td>
+<td align="center">20</td>
 </tr>
 <tr class="even">
-<td align="right">NA</td>
-<td align="left">2012-10-01</td>
-<td align="right">25</td>
+<td align="center">NA</td>
+<td align="center">2012-10-01</td>
+<td align="center">25</td>
 </tr>
 </tbody>
 </table>
@@ -199,320 +205,325 @@ kable(head(data_activity))</code></pre>
 <p>The mean/median number of steps for each day are:</p>
 <pre class="r"><code>data_steps %&gt;% 
   select(Day = date, `Number of steps (mean)` = mean_steps, `Number of steps (median)` = median_steps) %&gt;% 
-  kable()</code></pre>
-<table>
+  pander()</code></pre>
+<table style="width:86%;">
+<colgroup>
+<col width="15%"></col>
+<col width="34%"></col>
+<col width="36%"></col>
+</colgroup>
 <thead>
 <tr class="header">
-<th align="left">Day</th>
-<th align="right">Number of steps (mean)</th>
-<th align="right">Number of steps (median)</th>
+<th align="center">Day</th>
+<th align="center">Number of steps (mean)</th>
+<th align="center">Number of steps (median)</th>
 </tr>
 </thead>
 <tbody>
 <tr class="odd">
-<td align="left">2012-10-01</td>
-<td align="right">NaN</td>
-<td align="right">NA</td>
+<td align="center">2012-10-01</td>
+<td align="center">NA</td>
+<td align="center">NA</td>
 </tr>
 <tr class="even">
-<td align="left">2012-10-02</td>
-<td align="right">0.4375000</td>
-<td align="right">0</td>
+<td align="center">2012-10-02</td>
+<td align="center">0.4375000</td>
+<td align="center">0</td>
 </tr>
 <tr class="odd">
-<td align="left">2012-10-03</td>
-<td align="right">39.4166667</td>
-<td align="right">0</td>
+<td align="center">2012-10-03</td>
+<td align="center">39.4166667</td>
+<td align="center">0</td>
 </tr>
 <tr class="even">
-<td align="left">2012-10-04</td>
-<td align="right">42.0694444</td>
-<td align="right">0</td>
+<td align="center">2012-10-04</td>
+<td align="center">42.0694444</td>
+<td align="center">0</td>
 </tr>
 <tr class="odd">
-<td align="left">2012-10-05</td>
-<td align="right">46.1597222</td>
-<td align="right">0</td>
+<td align="center">2012-10-05</td>
+<td align="center">46.1597222</td>
+<td align="center">0</td>
 </tr>
 <tr class="even">
-<td align="left">2012-10-06</td>
-<td align="right">53.5416667</td>
-<td align="right">0</td>
+<td align="center">2012-10-06</td>
+<td align="center">53.5416667</td>
+<td align="center">0</td>
 </tr>
 <tr class="odd">
-<td align="left">2012-10-07</td>
-<td align="right">38.2465278</td>
-<td align="right">0</td>
+<td align="center">2012-10-07</td>
+<td align="center">38.2465278</td>
+<td align="center">0</td>
 </tr>
 <tr class="even">
-<td align="left">2012-10-08</td>
-<td align="right">NaN</td>
-<td align="right">NA</td>
+<td align="center">2012-10-08</td>
+<td align="center">NA</td>
+<td align="center">NA</td>
 </tr>
 <tr class="odd">
-<td align="left">2012-10-09</td>
-<td align="right">44.4826389</td>
-<td align="right">0</td>
+<td align="center">2012-10-09</td>
+<td align="center">44.4826389</td>
+<td align="center">0</td>
 </tr>
 <tr class="even">
-<td align="left">2012-10-10</td>
-<td align="right">34.3750000</td>
-<td align="right">0</td>
+<td align="center">2012-10-10</td>
+<td align="center">34.3750000</td>
+<td align="center">0</td>
 </tr>
 <tr class="odd">
-<td align="left">2012-10-11</td>
-<td align="right">35.7777778</td>
-<td align="right">0</td>
+<td align="center">2012-10-11</td>
+<td align="center">35.7777778</td>
+<td align="center">0</td>
 </tr>
 <tr class="even">
-<td align="left">2012-10-12</td>
-<td align="right">60.3541667</td>
-<td align="right">0</td>
+<td align="center">2012-10-12</td>
+<td align="center">60.3541667</td>
+<td align="center">0</td>
 </tr>
 <tr class="odd">
-<td align="left">2012-10-13</td>
-<td align="right">43.1458333</td>
-<td align="right">0</td>
+<td align="center">2012-10-13</td>
+<td align="center">43.1458333</td>
+<td align="center">0</td>
 </tr>
 <tr class="even">
-<td align="left">2012-10-14</td>
-<td align="right">52.4236111</td>
-<td align="right">0</td>
+<td align="center">2012-10-14</td>
+<td align="center">52.4236111</td>
+<td align="center">0</td>
 </tr>
 <tr class="odd">
-<td align="left">2012-10-15</td>
-<td align="right">35.2048611</td>
-<td align="right">0</td>
+<td align="center">2012-10-15</td>
+<td align="center">35.2048611</td>
+<td align="center">0</td>
 </tr>
 <tr class="even">
-<td align="left">2012-10-16</td>
-<td align="right">52.3750000</td>
-<td align="right">0</td>
+<td align="center">2012-10-16</td>
+<td align="center">52.3750000</td>
+<td align="center">0</td>
 </tr>
 <tr class="odd">
-<td align="left">2012-10-17</td>
-<td align="right">46.7083333</td>
-<td align="right">0</td>
+<td align="center">2012-10-17</td>
+<td align="center">46.7083333</td>
+<td align="center">0</td>
 </tr>
 <tr class="even">
-<td align="left">2012-10-18</td>
-<td align="right">34.9166667</td>
-<td align="right">0</td>
+<td align="center">2012-10-18</td>
+<td align="center">34.9166667</td>
+<td align="center">0</td>
 </tr>
 <tr class="odd">
-<td align="left">2012-10-19</td>
-<td align="right">41.0729167</td>
-<td align="right">0</td>
+<td align="center">2012-10-19</td>
+<td align="center">41.0729167</td>
+<td align="center">0</td>
 </tr>
 <tr class="even">
-<td align="left">2012-10-20</td>
-<td align="right">36.0937500</td>
-<td align="right">0</td>
+<td align="center">2012-10-20</td>
+<td align="center">36.0937500</td>
+<td align="center">0</td>
 </tr>
 <tr class="odd">
-<td align="left">2012-10-21</td>
-<td align="right">30.6284722</td>
-<td align="right">0</td>
+<td align="center">2012-10-21</td>
+<td align="center">30.6284722</td>
+<td align="center">0</td>
 </tr>
 <tr class="even">
-<td align="left">2012-10-22</td>
-<td align="right">46.7361111</td>
-<td align="right">0</td>
+<td align="center">2012-10-22</td>
+<td align="center">46.7361111</td>
+<td align="center">0</td>
 </tr>
 <tr class="odd">
-<td align="left">2012-10-23</td>
-<td align="right">30.9652778</td>
-<td align="right">0</td>
+<td align="center">2012-10-23</td>
+<td align="center">30.9652778</td>
+<td align="center">0</td>
 </tr>
 <tr class="even">
-<td align="left">2012-10-24</td>
-<td align="right">29.0104167</td>
-<td align="right">0</td>
+<td align="center">2012-10-24</td>
+<td align="center">29.0104167</td>
+<td align="center">0</td>
 </tr>
 <tr class="odd">
-<td align="left">2012-10-25</td>
-<td align="right">8.6527778</td>
-<td align="right">0</td>
+<td align="center">2012-10-25</td>
+<td align="center">8.6527778</td>
+<td align="center">0</td>
 </tr>
 <tr class="even">
-<td align="left">2012-10-26</td>
-<td align="right">23.5347222</td>
-<td align="right">0</td>
+<td align="center">2012-10-26</td>
+<td align="center">23.5347222</td>
+<td align="center">0</td>
 </tr>
 <tr class="odd">
-<td align="left">2012-10-27</td>
-<td align="right">35.1354167</td>
-<td align="right">0</td>
+<td align="center">2012-10-27</td>
+<td align="center">35.1354167</td>
+<td align="center">0</td>
 </tr>
 <tr class="even">
-<td align="left">2012-10-28</td>
-<td align="right">39.7847222</td>
-<td align="right">0</td>
+<td align="center">2012-10-28</td>
+<td align="center">39.7847222</td>
+<td align="center">0</td>
 </tr>
 <tr class="odd">
-<td align="left">2012-10-29</td>
-<td align="right">17.4236111</td>
-<td align="right">0</td>
+<td align="center">2012-10-29</td>
+<td align="center">17.4236111</td>
+<td align="center">0</td>
 </tr>
 <tr class="even">
-<td align="left">2012-10-30</td>
-<td align="right">34.0937500</td>
-<td align="right">0</td>
+<td align="center">2012-10-30</td>
+<td align="center">34.0937500</td>
+<td align="center">0</td>
 </tr>
 <tr class="odd">
-<td align="left">2012-10-31</td>
-<td align="right">53.5208333</td>
-<td align="right">0</td>
+<td align="center">2012-10-31</td>
+<td align="center">53.5208333</td>
+<td align="center">0</td>
 </tr>
 <tr class="even">
-<td align="left">2012-11-01</td>
-<td align="right">NaN</td>
-<td align="right">NA</td>
+<td align="center">2012-11-01</td>
+<td align="center">NA</td>
+<td align="center">NA</td>
 </tr>
 <tr class="odd">
-<td align="left">2012-11-02</td>
-<td align="right">36.8055556</td>
-<td align="right">0</td>
+<td align="center">2012-11-02</td>
+<td align="center">36.8055556</td>
+<td align="center">0</td>
 </tr>
 <tr class="even">
-<td align="left">2012-11-03</td>
-<td align="right">36.7048611</td>
-<td align="right">0</td>
+<td align="center">2012-11-03</td>
+<td align="center">36.7048611</td>
+<td align="center">0</td>
 </tr>
 <tr class="odd">
-<td align="left">2012-11-04</td>
-<td align="right">NaN</td>
-<td align="right">NA</td>
+<td align="center">2012-11-04</td>
+<td align="center">NA</td>
+<td align="center">NA</td>
 </tr>
 <tr class="even">
-<td align="left">2012-11-05</td>
-<td align="right">36.2465278</td>
-<td align="right">0</td>
+<td align="center">2012-11-05</td>
+<td align="center">36.2465278</td>
+<td align="center">0</td>
 </tr>
 <tr class="odd">
-<td align="left">2012-11-06</td>
-<td align="right">28.9375000</td>
-<td align="right">0</td>
+<td align="center">2012-11-06</td>
+<td align="center">28.9375000</td>
+<td align="center">0</td>
 </tr>
 <tr class="even">
-<td align="left">2012-11-07</td>
-<td align="right">44.7326389</td>
-<td align="right">0</td>
+<td align="center">2012-11-07</td>
+<td align="center">44.7326389</td>
+<td align="center">0</td>
 </tr>
 <tr class="odd">
-<td align="left">2012-11-08</td>
-<td align="right">11.1770833</td>
-<td align="right">0</td>
+<td align="center">2012-11-08</td>
+<td align="center">11.1770833</td>
+<td align="center">0</td>
 </tr>
 <tr class="even">
-<td align="left">2012-11-09</td>
-<td align="right">NaN</td>
-<td align="right">NA</td>
+<td align="center">2012-11-09</td>
+<td align="center">NA</td>
+<td align="center">NA</td>
 </tr>
 <tr class="odd">
-<td align="left">2012-11-10</td>
-<td align="right">NaN</td>
-<td align="right">NA</td>
+<td align="center">2012-11-10</td>
+<td align="center">NA</td>
+<td align="center">NA</td>
 </tr>
 <tr class="even">
-<td align="left">2012-11-11</td>
-<td align="right">43.7777778</td>
-<td align="right">0</td>
+<td align="center">2012-11-11</td>
+<td align="center">43.7777778</td>
+<td align="center">0</td>
 </tr>
 <tr class="odd">
-<td align="left">2012-11-12</td>
-<td align="right">37.3784722</td>
-<td align="right">0</td>
+<td align="center">2012-11-12</td>
+<td align="center">37.3784722</td>
+<td align="center">0</td>
 </tr>
 <tr class="even">
-<td align="left">2012-11-13</td>
-<td align="right">25.4722222</td>
-<td align="right">0</td>
+<td align="center">2012-11-13</td>
+<td align="center">25.4722222</td>
+<td align="center">0</td>
 </tr>
 <tr class="odd">
-<td align="left">2012-11-14</td>
-<td align="right">NaN</td>
-<td align="right">NA</td>
+<td align="center">2012-11-14</td>
+<td align="center">NA</td>
+<td align="center">NA</td>
 </tr>
 <tr class="even">
-<td align="left">2012-11-15</td>
-<td align="right">0.1423611</td>
-<td align="right">0</td>
+<td align="center">2012-11-15</td>
+<td align="center">0.1423611</td>
+<td align="center">0</td>
 </tr>
 <tr class="odd">
-<td align="left">2012-11-16</td>
-<td align="right">18.8923611</td>
-<td align="right">0</td>
+<td align="center">2012-11-16</td>
+<td align="center">18.8923611</td>
+<td align="center">0</td>
 </tr>
 <tr class="even">
-<td align="left">2012-11-17</td>
-<td align="right">49.7881944</td>
-<td align="right">0</td>
+<td align="center">2012-11-17</td>
+<td align="center">49.7881944</td>
+<td align="center">0</td>
 </tr>
 <tr class="odd">
-<td align="left">2012-11-18</td>
-<td align="right">52.4652778</td>
-<td align="right">0</td>
+<td align="center">2012-11-18</td>
+<td align="center">52.4652778</td>
+<td align="center">0</td>
 </tr>
 <tr class="even">
-<td align="left">2012-11-19</td>
-<td align="right">30.6979167</td>
-<td align="right">0</td>
+<td align="center">2012-11-19</td>
+<td align="center">30.6979167</td>
+<td align="center">0</td>
 </tr>
 <tr class="odd">
-<td align="left">2012-11-20</td>
-<td align="right">15.5277778</td>
-<td align="right">0</td>
+<td align="center">2012-11-20</td>
+<td align="center">15.5277778</td>
+<td align="center">0</td>
 </tr>
 <tr class="even">
-<td align="left">2012-11-21</td>
-<td align="right">44.3993056</td>
-<td align="right">0</td>
+<td align="center">2012-11-21</td>
+<td align="center">44.3993056</td>
+<td align="center">0</td>
 </tr>
 <tr class="odd">
-<td align="left">2012-11-22</td>
-<td align="right">70.9270833</td>
-<td align="right">0</td>
+<td align="center">2012-11-22</td>
+<td align="center">70.9270833</td>
+<td align="center">0</td>
 </tr>
 <tr class="even">
-<td align="left">2012-11-23</td>
-<td align="right">73.5902778</td>
-<td align="right">0</td>
+<td align="center">2012-11-23</td>
+<td align="center">73.5902778</td>
+<td align="center">0</td>
 </tr>
 <tr class="odd">
-<td align="left">2012-11-24</td>
-<td align="right">50.2708333</td>
-<td align="right">0</td>
+<td align="center">2012-11-24</td>
+<td align="center">50.2708333</td>
+<td align="center">0</td>
 </tr>
 <tr class="even">
-<td align="left">2012-11-25</td>
-<td align="right">41.0902778</td>
-<td align="right">0</td>
+<td align="center">2012-11-25</td>
+<td align="center">41.0902778</td>
+<td align="center">0</td>
 </tr>
 <tr class="odd">
-<td align="left">2012-11-26</td>
-<td align="right">38.7569444</td>
-<td align="right">0</td>
+<td align="center">2012-11-26</td>
+<td align="center">38.7569444</td>
+<td align="center">0</td>
 </tr>
 <tr class="even">
-<td align="left">2012-11-27</td>
-<td align="right">47.3819444</td>
-<td align="right">0</td>
+<td align="center">2012-11-27</td>
+<td align="center">47.3819444</td>
+<td align="center">0</td>
 </tr>
 <tr class="odd">
-<td align="left">2012-11-28</td>
-<td align="right">35.3576389</td>
-<td align="right">0</td>
+<td align="center">2012-11-28</td>
+<td align="center">35.3576389</td>
+<td align="center">0</td>
 </tr>
 <tr class="even">
-<td align="left">2012-11-29</td>
-<td align="right">24.4687500</td>
-<td align="right">0</td>
+<td align="center">2012-11-29</td>
+<td align="center">24.4687500</td>
+<td align="center">0</td>
 </tr>
 <tr class="odd">
-<td align="left">2012-11-30</td>
-<td align="right">NaN</td>
-<td align="right">NA</td>
+<td align="center">2012-11-30</td>
+<td align="center">NA</td>
+<td align="center">NA</td>
 </tr>
 </tbody>
 </table>
@@ -564,320 +575,325 @@ kable(head(data_activity))</code></pre>
 <p>The difference to the original data containing missing values is obvious: the peak at low numbers is gone and overall we have more days with 10,000 or more steps (which makes sense when looking for the total number of steps per day). And we can look at the mean/median number of steps per day.</p>
 <pre class="r"><code>data_steps_imputed %&gt;% 
   select(Day = date, `Number of steps (mean)` = mean_steps, `Number of steps (median)` = median_steps) %&gt;% 
-  kable()</code></pre>
-<table>
+  pander()</code></pre>
+<table style="width:86%;">
+<colgroup>
+<col width="15%"></col>
+<col width="34%"></col>
+<col width="36%"></col>
+</colgroup>
 <thead>
 <tr class="header">
-<th align="left">Day</th>
-<th align="right">Number of steps (mean)</th>
-<th align="right">Number of steps (median)</th>
+<th align="center">Day</th>
+<th align="center">Number of steps (mean)</th>
+<th align="center">Number of steps (median)</th>
 </tr>
 </thead>
 <tbody>
 <tr class="odd">
-<td align="left">2012-10-01</td>
-<td align="right">37.3680556</td>
-<td align="right">34.5</td>
+<td align="center">2012-10-01</td>
+<td align="center">37.3680556</td>
+<td align="center">34.5</td>
 </tr>
 <tr class="even">
-<td align="left">2012-10-02</td>
-<td align="right">0.4375000</td>
-<td align="right">0.0</td>
+<td align="center">2012-10-02</td>
+<td align="center">0.4375000</td>
+<td align="center">0.0</td>
 </tr>
 <tr class="odd">
-<td align="left">2012-10-03</td>
-<td align="right">39.4166667</td>
-<td align="right">0.0</td>
+<td align="center">2012-10-03</td>
+<td align="center">39.4166667</td>
+<td align="center">0.0</td>
 </tr>
 <tr class="even">
-<td align="left">2012-10-04</td>
-<td align="right">42.0694444</td>
-<td align="right">0.0</td>
+<td align="center">2012-10-04</td>
+<td align="center">42.0694444</td>
+<td align="center">0.0</td>
 </tr>
 <tr class="odd">
-<td align="left">2012-10-05</td>
-<td align="right">46.1597222</td>
-<td align="right">0.0</td>
+<td align="center">2012-10-05</td>
+<td align="center">46.1597222</td>
+<td align="center">0.0</td>
 </tr>
 <tr class="even">
-<td align="left">2012-10-06</td>
-<td align="right">53.5416667</td>
-<td align="right">0.0</td>
+<td align="center">2012-10-06</td>
+<td align="center">53.5416667</td>
+<td align="center">0.0</td>
 </tr>
 <tr class="odd">
-<td align="left">2012-10-07</td>
-<td align="right">38.2465278</td>
-<td align="right">0.0</td>
+<td align="center">2012-10-07</td>
+<td align="center">38.2465278</td>
+<td align="center">0.0</td>
 </tr>
 <tr class="even">
-<td align="left">2012-10-08</td>
-<td align="right">37.3680556</td>
-<td align="right">34.5</td>
+<td align="center">2012-10-08</td>
+<td align="center">37.3680556</td>
+<td align="center">34.5</td>
 </tr>
 <tr class="odd">
-<td align="left">2012-10-09</td>
-<td align="right">44.4826389</td>
-<td align="right">0.0</td>
+<td align="center">2012-10-09</td>
+<td align="center">44.4826389</td>
+<td align="center">0.0</td>
 </tr>
 <tr class="even">
-<td align="left">2012-10-10</td>
-<td align="right">34.3750000</td>
-<td align="right">0.0</td>
+<td align="center">2012-10-10</td>
+<td align="center">34.3750000</td>
+<td align="center">0.0</td>
 </tr>
 <tr class="odd">
-<td align="left">2012-10-11</td>
-<td align="right">35.7777778</td>
-<td align="right">0.0</td>
+<td align="center">2012-10-11</td>
+<td align="center">35.7777778</td>
+<td align="center">0.0</td>
 </tr>
 <tr class="even">
-<td align="left">2012-10-12</td>
-<td align="right">60.3541667</td>
-<td align="right">0.0</td>
+<td align="center">2012-10-12</td>
+<td align="center">60.3541667</td>
+<td align="center">0.0</td>
 </tr>
 <tr class="odd">
-<td align="left">2012-10-13</td>
-<td align="right">43.1458333</td>
-<td align="right">0.0</td>
+<td align="center">2012-10-13</td>
+<td align="center">43.1458333</td>
+<td align="center">0.0</td>
 </tr>
 <tr class="even">
-<td align="left">2012-10-14</td>
-<td align="right">52.4236111</td>
-<td align="right">0.0</td>
+<td align="center">2012-10-14</td>
+<td align="center">52.4236111</td>
+<td align="center">0.0</td>
 </tr>
 <tr class="odd">
-<td align="left">2012-10-15</td>
-<td align="right">35.2048611</td>
-<td align="right">0.0</td>
+<td align="center">2012-10-15</td>
+<td align="center">35.2048611</td>
+<td align="center">0.0</td>
 </tr>
 <tr class="even">
-<td align="left">2012-10-16</td>
-<td align="right">52.3750000</td>
-<td align="right">0.0</td>
+<td align="center">2012-10-16</td>
+<td align="center">52.3750000</td>
+<td align="center">0.0</td>
 </tr>
 <tr class="odd">
-<td align="left">2012-10-17</td>
-<td align="right">46.7083333</td>
-<td align="right">0.0</td>
+<td align="center">2012-10-17</td>
+<td align="center">46.7083333</td>
+<td align="center">0.0</td>
 </tr>
 <tr class="even">
-<td align="left">2012-10-18</td>
-<td align="right">34.9166667</td>
-<td align="right">0.0</td>
+<td align="center">2012-10-18</td>
+<td align="center">34.9166667</td>
+<td align="center">0.0</td>
 </tr>
 <tr class="odd">
-<td align="left">2012-10-19</td>
-<td align="right">41.0729167</td>
-<td align="right">0.0</td>
+<td align="center">2012-10-19</td>
+<td align="center">41.0729167</td>
+<td align="center">0.0</td>
 </tr>
 <tr class="even">
-<td align="left">2012-10-20</td>
-<td align="right">36.0937500</td>
-<td align="right">0.0</td>
+<td align="center">2012-10-20</td>
+<td align="center">36.0937500</td>
+<td align="center">0.0</td>
 </tr>
 <tr class="odd">
-<td align="left">2012-10-21</td>
-<td align="right">30.6284722</td>
-<td align="right">0.0</td>
+<td align="center">2012-10-21</td>
+<td align="center">30.6284722</td>
+<td align="center">0.0</td>
 </tr>
 <tr class="even">
-<td align="left">2012-10-22</td>
-<td align="right">46.7361111</td>
-<td align="right">0.0</td>
+<td align="center">2012-10-22</td>
+<td align="center">46.7361111</td>
+<td align="center">0.0</td>
 </tr>
 <tr class="odd">
-<td align="left">2012-10-23</td>
-<td align="right">30.9652778</td>
-<td align="right">0.0</td>
+<td align="center">2012-10-23</td>
+<td align="center">30.9652778</td>
+<td align="center">0.0</td>
 </tr>
 <tr class="even">
-<td align="left">2012-10-24</td>
-<td align="right">29.0104167</td>
-<td align="right">0.0</td>
+<td align="center">2012-10-24</td>
+<td align="center">29.0104167</td>
+<td align="center">0.0</td>
 </tr>
 <tr class="odd">
-<td align="left">2012-10-25</td>
-<td align="right">8.6527778</td>
-<td align="right">0.0</td>
+<td align="center">2012-10-25</td>
+<td align="center">8.6527778</td>
+<td align="center">0.0</td>
 </tr>
 <tr class="even">
-<td align="left">2012-10-26</td>
-<td align="right">23.5347222</td>
-<td align="right">0.0</td>
+<td align="center">2012-10-26</td>
+<td align="center">23.5347222</td>
+<td align="center">0.0</td>
 </tr>
 <tr class="odd">
-<td align="left">2012-10-27</td>
-<td align="right">35.1354167</td>
-<td align="right">0.0</td>
+<td align="center">2012-10-27</td>
+<td align="center">35.1354167</td>
+<td align="center">0.0</td>
 </tr>
 <tr class="even">
-<td align="left">2012-10-28</td>
-<td align="right">39.7847222</td>
-<td align="right">0.0</td>
+<td align="center">2012-10-28</td>
+<td align="center">39.7847222</td>
+<td align="center">0.0</td>
 </tr>
 <tr class="odd">
-<td align="left">2012-10-29</td>
-<td align="right">17.4236111</td>
-<td align="right">0.0</td>
+<td align="center">2012-10-29</td>
+<td align="center">17.4236111</td>
+<td align="center">0.0</td>
 </tr>
 <tr class="even">
-<td align="left">2012-10-30</td>
-<td align="right">34.0937500</td>
-<td align="right">0.0</td>
+<td align="center">2012-10-30</td>
+<td align="center">34.0937500</td>
+<td align="center">0.0</td>
 </tr>
 <tr class="odd">
-<td align="left">2012-10-31</td>
-<td align="right">53.5208333</td>
-<td align="right">0.0</td>
+<td align="center">2012-10-31</td>
+<td align="center">53.5208333</td>
+<td align="center">0.0</td>
 </tr>
 <tr class="even">
-<td align="left">2012-11-01</td>
-<td align="right">37.3680556</td>
-<td align="right">34.5</td>
+<td align="center">2012-11-01</td>
+<td align="center">37.3680556</td>
+<td align="center">34.5</td>
 </tr>
 <tr class="odd">
-<td align="left">2012-11-02</td>
-<td align="right">36.8055556</td>
-<td align="right">0.0</td>
+<td align="center">2012-11-02</td>
+<td align="center">36.8055556</td>
+<td align="center">0.0</td>
 </tr>
 <tr class="even">
-<td align="left">2012-11-03</td>
-<td align="right">36.7048611</td>
-<td align="right">0.0</td>
+<td align="center">2012-11-03</td>
+<td align="center">36.7048611</td>
+<td align="center">0.0</td>
 </tr>
 <tr class="odd">
-<td align="left">2012-11-04</td>
-<td align="right">37.3680556</td>
-<td align="right">34.5</td>
+<td align="center">2012-11-04</td>
+<td align="center">37.3680556</td>
+<td align="center">34.5</td>
 </tr>
 <tr class="even">
-<td align="left">2012-11-05</td>
-<td align="right">36.2465278</td>
-<td align="right">0.0</td>
+<td align="center">2012-11-05</td>
+<td align="center">36.2465278</td>
+<td align="center">0.0</td>
 </tr>
 <tr class="odd">
-<td align="left">2012-11-06</td>
-<td align="right">28.9375000</td>
-<td align="right">0.0</td>
+<td align="center">2012-11-06</td>
+<td align="center">28.9375000</td>
+<td align="center">0.0</td>
 </tr>
 <tr class="even">
-<td align="left">2012-11-07</td>
-<td align="right">44.7326389</td>
-<td align="right">0.0</td>
+<td align="center">2012-11-07</td>
+<td align="center">44.7326389</td>
+<td align="center">0.0</td>
 </tr>
 <tr class="odd">
-<td align="left">2012-11-08</td>
-<td align="right">11.1770833</td>
-<td align="right">0.0</td>
+<td align="center">2012-11-08</td>
+<td align="center">11.1770833</td>
+<td align="center">0.0</td>
 </tr>
 <tr class="even">
-<td align="left">2012-11-09</td>
-<td align="right">37.3680556</td>
-<td align="right">34.5</td>
+<td align="center">2012-11-09</td>
+<td align="center">37.3680556</td>
+<td align="center">34.5</td>
 </tr>
 <tr class="odd">
-<td align="left">2012-11-10</td>
-<td align="right">37.3680556</td>
-<td align="right">34.5</td>
+<td align="center">2012-11-10</td>
+<td align="center">37.3680556</td>
+<td align="center">34.5</td>
 </tr>
 <tr class="even">
-<td align="left">2012-11-11</td>
-<td align="right">43.7777778</td>
-<td align="right">0.0</td>
+<td align="center">2012-11-11</td>
+<td align="center">43.7777778</td>
+<td align="center">0.0</td>
 </tr>
 <tr class="odd">
-<td align="left">2012-11-12</td>
-<td align="right">37.3784722</td>
-<td align="right">0.0</td>
+<td align="center">2012-11-12</td>
+<td align="center">37.3784722</td>
+<td align="center">0.0</td>
 </tr>
 <tr class="even">
-<td align="left">2012-11-13</td>
-<td align="right">25.4722222</td>
-<td align="right">0.0</td>
+<td align="center">2012-11-13</td>
+<td align="center">25.4722222</td>
+<td align="center">0.0</td>
 </tr>
 <tr class="odd">
-<td align="left">2012-11-14</td>
-<td align="right">37.3680556</td>
-<td align="right">34.5</td>
+<td align="center">2012-11-14</td>
+<td align="center">37.3680556</td>
+<td align="center">34.5</td>
 </tr>
 <tr class="even">
-<td align="left">2012-11-15</td>
-<td align="right">0.1423611</td>
-<td align="right">0.0</td>
+<td align="center">2012-11-15</td>
+<td align="center">0.1423611</td>
+<td align="center">0.0</td>
 </tr>
 <tr class="odd">
-<td align="left">2012-11-16</td>
-<td align="right">18.8923611</td>
-<td align="right">0.0</td>
+<td align="center">2012-11-16</td>
+<td align="center">18.8923611</td>
+<td align="center">0.0</td>
 </tr>
 <tr class="even">
-<td align="left">2012-11-17</td>
-<td align="right">49.7881944</td>
-<td align="right">0.0</td>
+<td align="center">2012-11-17</td>
+<td align="center">49.7881944</td>
+<td align="center">0.0</td>
 </tr>
 <tr class="odd">
-<td align="left">2012-11-18</td>
-<td align="right">52.4652778</td>
-<td align="right">0.0</td>
+<td align="center">2012-11-18</td>
+<td align="center">52.4652778</td>
+<td align="center">0.0</td>
 </tr>
 <tr class="even">
-<td align="left">2012-11-19</td>
-<td align="right">30.6979167</td>
-<td align="right">0.0</td>
+<td align="center">2012-11-19</td>
+<td align="center">30.6979167</td>
+<td align="center">0.0</td>
 </tr>
 <tr class="odd">
-<td align="left">2012-11-20</td>
-<td align="right">15.5277778</td>
-<td align="right">0.0</td>
+<td align="center">2012-11-20</td>
+<td align="center">15.5277778</td>
+<td align="center">0.0</td>
 </tr>
 <tr class="even">
-<td align="left">2012-11-21</td>
-<td align="right">44.3993056</td>
-<td align="right">0.0</td>
+<td align="center">2012-11-21</td>
+<td align="center">44.3993056</td>
+<td align="center">0.0</td>
 </tr>
 <tr class="odd">
-<td align="left">2012-11-22</td>
-<td align="right">70.9270833</td>
-<td align="right">0.0</td>
+<td align="center">2012-11-22</td>
+<td align="center">70.9270833</td>
+<td align="center">0.0</td>
 </tr>
 <tr class="even">
-<td align="left">2012-11-23</td>
-<td align="right">73.5902778</td>
-<td align="right">0.0</td>
+<td align="center">2012-11-23</td>
+<td align="center">73.5902778</td>
+<td align="center">0.0</td>
 </tr>
 <tr class="odd">
-<td align="left">2012-11-24</td>
-<td align="right">50.2708333</td>
-<td align="right">0.0</td>
+<td align="center">2012-11-24</td>
+<td align="center">50.2708333</td>
+<td align="center">0.0</td>
 </tr>
 <tr class="even">
-<td align="left">2012-11-25</td>
-<td align="right">41.0902778</td>
-<td align="right">0.0</td>
+<td align="center">2012-11-25</td>
+<td align="center">41.0902778</td>
+<td align="center">0.0</td>
 </tr>
 <tr class="odd">
-<td align="left">2012-11-26</td>
-<td align="right">38.7569444</td>
-<td align="right">0.0</td>
+<td align="center">2012-11-26</td>
+<td align="center">38.7569444</td>
+<td align="center">0.0</td>
 </tr>
 <tr class="even">
-<td align="left">2012-11-27</td>
-<td align="right">47.3819444</td>
-<td align="right">0.0</td>
+<td align="center">2012-11-27</td>
+<td align="center">47.3819444</td>
+<td align="center">0.0</td>
 </tr>
 <tr class="odd">
-<td align="left">2012-11-28</td>
-<td align="right">35.3576389</td>
-<td align="right">0.0</td>
+<td align="center">2012-11-28</td>
+<td align="center">35.3576389</td>
+<td align="center">0.0</td>
 </tr>
 <tr class="even">
-<td align="left">2012-11-29</td>
-<td align="right">24.4687500</td>
-<td align="right">0.0</td>
+<td align="center">2012-11-29</td>
+<td align="center">24.4687500</td>
+<td align="center">0.0</td>
 </tr>
 <tr class="odd">
-<td align="left">2012-11-30</td>
-<td align="right">37.3680556</td>
-<td align="right">34.5</td>
+<td align="center">2012-11-30</td>
+<td align="center">37.3680556</td>
+<td align="center">34.5</td>
 </tr>
 </tbody>
 </table>
