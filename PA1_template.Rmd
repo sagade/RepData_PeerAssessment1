@@ -15,7 +15,7 @@ library(ggplot2)
 library(dplyr)
 
 # setup global knitr options
-knitr::opts_chunk$set(error = TRUE, message = FALSE, results = 'hide', warning = FALSE, echo = TRUE)
+knitr::opts_chunk$set(error = TRUE, message = FALSE, results = 'hide', warning = FALSE, echo = TRUE, fig.path = "figure/")
 
 # Set local for english weekdays 
 Sys.setlocale("LC_TIME","C")
